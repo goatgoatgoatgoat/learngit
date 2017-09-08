@@ -1,2 +1,12 @@
-Git is a distributed version control system.
-Git is a free software.
+RFC 指的是用来制定HTTP协议技术标准的文档，Request for comments
+HTTP是一种不保存状态，即无状态（stateless）
+HTTP方法  
+    GET获取资源  
+    HOST传输实体主体 
+    PUT方法用来传输文件。就像FTP协议的文件上传一样，要求在报文的主体中包含文件内容，然后保存道请求URI指定的位置。但是不带验证机制，一般不用。
+    HEAD方法获得报文首部。基本和GET方法一样，不过不返回报文主体部分，一般用于确认URI的有效性以及资源更新的日期时间等。
+    DELETE用来删除文件，与PUT相反，同时跟PUT一样不带验证机制，所以一般不用。
+    OPTIONS是询问支持的方法。
+    TRACE追踪路径，确认连接过程中发生的一系列操作。不过容易引起XST（跨站追踪）。基本不用
+   
+HTTP持久连接使得能够实现管线化发送

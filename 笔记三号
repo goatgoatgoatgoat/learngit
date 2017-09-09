@@ -1,0 +1,41 @@
+HTTP首部
+四种HTTP首部字段类型
+	General Header Fields 通用首部字段 请求报文和响应报文两方都会使用的首部
+	Request Header Fields 请求首部字段 从客户端向服务器发送请求报文时使用的首部。补充了请求的附加内容、客户端信息、响应内容相关优先级等信息
+	Reponse Header Fields 响应首部字段 从服务器端向客户端返回响应时使用的首部。补充了响应的附加内容，也会要求客户端附加额外的内容信息
+	Entity Header Fields  实体首部字段 针对请求报文和响应报文的实体部分使用的首部。补充了资源内容更新时间等与实体有关的信息
+
+End-to-end 首部和 Hop-by-hop 首部
+	End-to-end首部 端到端首部 分在此类别中的首部会转发给请求/响应对应的最终接收目标，且必须保存在由缓存生成的响应中，另外规定必须被转发
+	Hop-by-hop首部 逐跳首部  分在此类别的首部只对单词转发有效，会因通过缓存或代理而不在转发。对于1.1或者更高的版本中，如果要使用hop-by-hop首部，需要提供Connection首部字段
+逐跳首部枚举
+connection keep-alive proxy-authenticate proxy-authorization Trailer TE Transfer-encoding Upgrade
+
+cache-control 缓存控制
+	Cache-Control: public 表示其他用户也可以利用缓存
+	Cache-Control: private 缓存服务器会对改特定用户提供资源缓存的服务，对于其他用户发送过来的请求，代理服务器则不会返回缓存
+	Cache-Control: no-cache 该指令目的是防止从个缓存中返回过期的资源。 
+		请求中包含了该指令，缓存服务器就必须吧客户端请求转发给源服务器
+		响应中包含了no-cache指令，缓存服务器也就不能再对资源进行缓存
+	Cache-Control: no-store 该指令暗示请求（和对应的响应）或响应中包含机密信息。所以使用该指令规定缓存不能在本地存储请求或者响应的任一部分
+	Cache-Control: max-age=数值（单位：秒） 
+		请求中使用该指令后，缓存服务器缓存时间小于该数值的资源可以被客户端接收。当指定数值为0时，缓存服务器通常需要将请求转发给源服务器。
+		响应中使用该指令后，缓存服务器将不再对该资源的有效性进行确认，指令中包含的数值就是缓存的最长时间。
+	Cache-Control:min-fresh=数值（单位:秒） 使用该指令后，大于该数值的资源无法作为响应返回。
+	Cache-Control:max-stale=数值（单位：秒） 要是使用这个指令，没有指定数值，那么不管过没过期，客户端都接收，要是指定了数值，只要小于这个数值，不管有没有过期，客户端都接收
+	Cache-Control:only-if-cached 
+		请求中使用这个指令表示客户端要求缓存服务器不重新加载响应，也不再次确认资源有效性，只返回本地缓存资源
+		要是本地缓存无响应，那么返回状态码504 Gateway Timeout
+	Cache-Control: must-revalidate 
+		使用must-revalidate指令，代理会向源服务器再次验证即将返回的资源是否有效。
+		要是连不上源服务器，缓存会返回一条504 Gateway Timeout
+		只要使用了must-revalidate，就会忽略max-stale
+	Cache-Control:proxy-revalidate 要求所有缓存服务器必须都要再次验证
+	Cache-Control:no-transform 禁止改变实体主体的媒体类型
+	Cache-Control可扩展，也就是能够在后面跟上他没有的指令，不过前提是缓存服务器能够看懂
+Connection
+	Connection可以控制逐跳字段 也就是说，connection后面写的东西，代理服务器会删掉再转发给源服务器
+	一般默认连接都是持久连接，因此服务器要是想断开连接，就得指定Connection首部字段值为Close
+Date 表明创建HTTP报文的时间日期
+Pragma 是为了兼顾有些服务器而定义的，所以一般发送Cache-Control：no-cache 时候都会加一句Pragma：no-cache
+Trailer 是事先说明报文主体后记录了哪些首部字段。  hop-by-hop

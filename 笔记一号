@@ -33,4 +33,19 @@ HTTP报文
 500 Internal Server Error 该状态码表示服务器在执行请求时发生了错误。
 503 Service Unavailable 该状态码表示服务器暂时处于超负载或者正在进行停机维护，现在无法处理请求。
 代理服务器的基本行为就是接收客户发送的请求后转发给其他服务器。代理不改变请求URI，会直接发送给前方持有资源的目标服务器。分为缓存代理和透明代理。
-
+200 OK
+204 No Content
+206 Partial Content
+301 Moved Permanently
+302 Found
+303 See Other
+304 Not Modified
+307 Temporary Redirect
+308 Permanently Redirect
+400 Bad Request
+401 Unauthorized
+403 Forbidden
+404 Not Found
+500 Internal Server Error
+503 Service Unavailable
+其中的302和307相同语义，表示临时重定向。但是307前后必须使用相同的方法，而308与301也是一样的定义表示永久重定向

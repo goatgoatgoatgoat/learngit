@@ -1,0 +1,45 @@
+import java.net.*;
+import java.util.*;
+import java.io.*;
+public class GETPOSTTest{
+	/**
+	 *向指定的URL发送GET方式的请求
+	 *@param url 发送请求的URL
+	 *@param param 请求参数，格式满足name1=value1&name2=value2的形式
+	 *@return URL代表远程资源的响应
+	 */
+
+	public static String SendGet(String url,String param){
+		String result = "";
+		String urlName = url+"?"+param;
+		try{
+			URL realUrl = new URL(urlName);
+			URLConnection cc = realUrl.openConnection();
+			cc.setRequestProperty("accept","*/*");
+			cc.setRequestProperty("connection","Keep-Alive");
+			cc.setRequestProperty("user-agent","Mozilla/4.0(compatible;MSTE6.0;Windows NT 5.1;SV1");
+			cc.connect();
+			Map<String,List<String>> map = cc.getHeaderFields();
+			for(String key :map.keySet()){
+				System.out.println(key+"--->"+map.get(key));
+			}
+			try{
+				BufferedReader in = new BufferedReader(new InputStreamReader(cc.getInputStream(),"utf-8"));
+				String line;
+				while((line=in.readLine())!=null){
+					result = result +"\n"+ line;
+				}
+			}finally{
+				System.out.println("hello");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public static void main(String[] args){
+		String s = SendGet("http://www.baidu.com",null);
+		System.out.println(s);
+	}
+}
